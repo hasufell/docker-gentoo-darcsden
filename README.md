@@ -1,3 +1,15 @@
+## Getting the images
+
+Just pull them:
+```sh
+docker pull hasufell/gentoo-darcsden
+```
+
+Or build them yourself:
+```sh
+docker build -t hasufell/gentoo-darcsden .
+```
+
 ## Running for the first time
 
 Create the volumes:
