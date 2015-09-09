@@ -48,19 +48,19 @@ RUN sudo -u darcsden echo 'export PATH="~/.cabal/bin:$PATH"' >> /home/darcsden/.
 RUN sudo -u darcsden sh -c "cd && ~/.cabal/bin/darcs get http://hub.darcs.net/simon/darcsden"
 RUN sudo -u darcsden sh -c "cd ~/darcsden && \
 	cabal install happy hsx2hs && cabal install -fssh"
-COPY darcsden.conf /home/darcsden/darcsden.conf
 RUN cp /home/darcsden/.cabal/bin/* /usr/local/bin/
-COPY setup.sh /setup.sh
-RUN chmod +x /setup.sh
 RUN mkdir /var/log/darcsden && chown darcsden:darcsden /var/log/darcsden && \
 	mkdir /home/darcsden/users/ && chown darcsden:darcsden /home/darcsden/users/
-
-# supervisor config
-COPY ./supervisord.conf /etc/supervisord.conf
 
 # fix couchdb permissions
 RUN chown couchdb /var/run/couchdb/
 
-EXPOSE 8900 22022
+# supervisor config
+COPY ./supervisord.conf /etc/supervisord.conf
+
+COPY setup.sh /setup.sh
+RUN chmod +x /setup.sh
+
+EXPOSE 8900
 
 CMD /setup.sh && /usr/bin/supervisord -n -c /etc/supervisord.conf
