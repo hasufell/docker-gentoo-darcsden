@@ -7,13 +7,14 @@ docker run \
 	-v /var/lib/couchdb \
 	-v /var/lib/redis \
 	-v /home/darcsden/users \
+	-v /home/darcsden/.ssh \
 	hasufell/gentoo-darcsden \
 	echo darcsden-volumes
 ```
 
 Now we start the real thing:
 ```sh
-docker run -d \
+docker run -ti -d \
 	--volumes-from darcsden-volumes \
 	-e FIRST_RUN=yes \
 	-p 8900:8900 \
@@ -21,7 +22,8 @@ docker run -d \
 	hasufell/gentoo-darcsden
 ```
 
-Whenever you run it at a later time, omit `-e FIRST_RUN=yes`.
+Whenever you run it at a later time with the same data volumes,
+omit `-e FIRST_RUN=yes`.
 
 ## Configuration
 

@@ -50,8 +50,8 @@ RUN sudo -u darcsden sh -c "cd ~/darcsden && \
 	cabal install happy hsx2hs && cabal install -fssh"
 COPY darcsden.conf /home/darcsden/darcsden.conf
 RUN cp /home/darcsden/.cabal/bin/* /usr/local/bin/
-COPY run.sh /run.sh
-RUN chmod +x /run.sh
+COPY setup.sh /setup.sh
+RUN chmod +x /setup.sh
 RUN mkdir /var/log/darcsden && chown darcsden:darcsden /var/log/darcsden && \
 	mkdir /home/darcsden/users/ && chown darcsden:darcsden /home/darcsden/users/
 
@@ -63,4 +63,4 @@ RUN chown couchdb /var/run/couchdb/
 
 EXPOSE 8900 22022
 
-CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
+CMD /setup.sh && /usr/bin/supervisord -n -c /etc/supervisord.conf
