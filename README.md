@@ -15,11 +15,11 @@ docker pull hasufell/gentoo-nginx-proxy
 
 ## Configuration
 
-If you don't use the front proxy, then you can just mount in your own
-`/home/darcsden/darcsden.conf` or add it to the build, but that's for advanced
-usage.
+If you don't use the front proxy or have otherwise very specific configuration
+needs, then you can just mount in your own `/home/darcsden/darcsden.conf` or add
+it to the build, but that's for advanced usage.
 
-The defaults are as follows (does not include [all available options](http://hub.darcs.net/simon/darcsden/browse/README.md)):
+The defaults should be fine and are as follows (does not include [all available options](http://hub.darcs.net/simon/darcsden/browse/README.md)):
 ```sh
 homeDir = /home/darcsden
 accessLog = /var/log/darcsden/access.log
@@ -32,8 +32,8 @@ sendEmail = ${DARCSDEN_SEND_EMAIL:-darcsden@${VIRTUAL_HOST:-localhost}}
 adminEmail = ${DARCSDEN_ADMIN_EMAIL:-admin@${VIRTUAL_HOST:-localhost}}
 ```
 
-As that indicates, the easiest way to configure is to just pass these variables
-via `-e` to `docker run` (see below):
+As that indicates, the easiest way to configure darcsden is to just pass these
+variables via `-e` to `docker run` (see below):
 * `VIRTUAL_HOST`: sets the hostname for connecting to the darcsden backend server
 * `VIRTUAL_PORT`: tells the front proxy on which port to contact the backend server
 * `DARCSDEN_SSH_PORT`: changes `sshPort`... you should also map this port from the host into the container, since people will connect directly (e.g. for `darcs push`)
@@ -69,7 +69,7 @@ Now we start the front proxy.
 ```sh
 docker run -ti -d \
 	-v /var/run/docker.sock:/tmp/docker.sock:ro \
-	-v <path-to-nginx-certs>:/etc/nginx/certs \
+	-v <full-path-to-nginx-certs>:/etc/nginx/certs \
 	-p 80:80 \
 	-p 443:443 \
 	hasufell/gentoo-nginx-proxy
@@ -87,10 +87,12 @@ Also see [here](http://hub.darcs.net/simon/darcsden/browse/README.md).
 docker run -ti -d \
 	--volumes-from darcsden-volumes \
 	-e FIRST_RUN=yes \
-	-e DARCSDEN_SSH_PORT=<sshport> \
 	-e VIRTUAL_HOST=<hostname> \
 	-e VIRTUAL_PORT=<host-port> \
+	-e DARCSDEN_SSH_PORT=<sshport> \
 	-p <sshport>:<sshport> \
+	-e DARCSDEN_SEND_EMAIL=<send-email> \
+	-e DARCSDEN_ADMIN_EMAIL=<admin-email> \
 	hasufell/gentoo-darcsden
 ```
 
