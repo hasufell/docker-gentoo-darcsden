@@ -6,8 +6,8 @@ if [[ ${FIRST_RUN} == "yes" ]] ; then
 
 	sleep 3
 
-	sudo -u darcsden sh -c 'cd && darcsden --install'
-	sudo -u darcsden ssh-keygen -N "" -f /home/darcsden/.ssh/id_rsa
+	sudo -Eu darcsden sh -c 'cd && darcsden --install'
+	sudo -Eu darcsden ssh-keygen -N "" -f /home/darcsden/.ssh/id_rsa
 
 	sleep 3
 
