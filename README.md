@@ -98,3 +98,7 @@ docker run -ti -d \
 
 Whenever you run it at a later time with the same data volumes,
 omit `-e FIRST_RUN=yes`.
+
+Note that `VIRTUAL_HOST` and `VIRTUAL_PORT` are __strictly__ necessary,
+because they are used by the front proxy to update its configuration
+automatically.
