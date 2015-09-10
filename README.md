@@ -73,3 +73,10 @@ docker run -ti -d \
 
 Whenever you run it at a later time with the same data volumes,
 omit `-e FIRST_RUN=yes`.
+
+In order to enable github OAuth, pass `-e GITHUB_CLIENT_ID=<your_client_id>`
+and `GITHUB_CLIENT_SECRET=<your_client_secret>` to the previous `docker run`
+command.
+
+## TODO
+* handle partial configuration better
