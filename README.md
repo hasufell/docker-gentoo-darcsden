@@ -86,6 +86,7 @@ Also see [here](http://hub.darcs.net/simon/darcsden/browse/README.md).
 ```sh
 docker run -ti -d \
 	--volumes-from darcsden-volumes \
+	--name=darcsden \
 	-e FIRST_RUN=yes \
 	-e VIRTUAL_HOST=<hostname> \
 	-e VIRTUAL_PORT=<host-port> \
@@ -102,3 +103,20 @@ omit `-e FIRST_RUN=yes`.
 Note that `VIRTUAL_HOST` and `VIRTUAL_PORT` are __strictly__ necessary,
 because they are used by the front proxy to update its configuration
 automatically.
+
+## Update procedure
+```sh
+docker stop darcsden
+docker rm darcsden
+docker pull hasufell/gentoo-darcsden
+docker run -ti -d \
+	--volumes-from darcsden-volumes \
+	--name=darcsden \
+	-e VIRTUAL_HOST=<hostname> \
+	-e VIRTUAL_PORT=<host-port> \
+	-e DARCSDEN_SSH_PORT=<sshport> \
+	-p <sshport>:<sshport> \
+	-e DARCSDEN_SEND_EMAIL=<send-email> \
+	-e DARCSDEN_ADMIN_EMAIL=<admin-email> \
+	hasufell/gentoo-darcsden
+```
