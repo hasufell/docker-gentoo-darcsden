@@ -79,9 +79,9 @@ Now we can start the darcsden instance.
 
 In order to enable github OAuth, additionally pass
 `-e GITHUB_CLIENT_ID=<your_client_id>` and
-`GITHUB_CLIENT_SECRET=<your_client_secret>` to the following `docker run`
-command. For google OAuth, pass `GOOGLE_CLIENT_ID=<your_client_id export>` and
-`GOOGLE_CLIENT_SECRET=<your_client_secret>`.
+`-e GITHUB_CLIENT_SECRET=<your_client_secret>` to the following `docker run`
+command. For google OAuth, pass `-e GOOGLE_CLIENT_ID=<your_client_id export>` and
+`-e GOOGLE_CLIENT_SECRET=<your_client_secret>`.
 Also see [here](http://hub.darcs.net/simon/darcsden/browse/README.md).
 ```sh
 docker run -ti -d \
