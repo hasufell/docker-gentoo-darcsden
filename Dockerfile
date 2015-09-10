@@ -25,12 +25,23 @@ RUN mkdir /etc/paludis/keywords.conf.d && \
 
 # install ghc, cabal and system darcsden dependencies
 RUN chgrp paludisbuild /dev/tty && \
-	cave resolve -z dev-lang/ghc dev-haskell/cabal dev-haskell/cabal-install \
-	dev-db/couchdb dev-db/redis -x
+	cave resolve -z --favour 'mail-mta/sendmail' \
+	dev-lang/ghc \
+	dev-haskell/cabal \
+	dev-haskell/cabal-install \
+	mail-mta/sendmail \
+	virtual/mta \
+	dev-db/couchdb \
+	dev-db/redis \
+	-x
 
 # install tools
 RUN chgrp paludisbuild /dev/tty && \
-	cave resolve -z app-admin/sudo app-admin/supervisor sys-process/htop -x
+	cave resolve -z \
+	app-admin/sudo \
+	app-admin/supervisor \
+	sys-process/htop \
+	-x
 
 RUN useradd --system -m -d /home/darcsden \
 	--shell /bin/bash --user-group darcsden
