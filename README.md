@@ -25,7 +25,7 @@ baseUrl = https://localhost/
 ```
 
 Additionally, you can pass the following environment variables:
-* VIRTUAL_HOSTNAME (sets hostname for nginx front proxy and changes `hostname`)
+* VIRTUAL_HOST (sets hostname for nginx front proxy and changes `hostname`)
 * VIRTUAL_PORT (sets port for nginx front proxy and changes `httpPort`)
 * DARCSDEN_SSH_PORT (changes `sshPort`)
 
@@ -65,7 +65,7 @@ docker run -ti -d \
 	--volumes-from darcsden-volumes \
 	-e FIRST_RUN=yes \
 	-e DARCSDEN_SSH_PORT=<sshport> \
-	-e VIRTUAL_HOSTNAME=<hostname> \
+	-e VIRTUAL_HOST=<hostname> \
 	-e VIRTUAL_PORT=<host-port> \
 	-p <sshport>:<sshport> \
 	hasufell/gentoo-darcsden
