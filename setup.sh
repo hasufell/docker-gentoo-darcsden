@@ -38,3 +38,6 @@ else
 		sed -i -e "s/^sshPort =.*$/sshPort = ${DARCSDEN_SSH_PORT}/" \
 			/home/darcsden/darcsden.conf
 fi
+
+# set privliges for darcsden-ssh to bind to ports <1024
+setcap 'cap_net_bind_service=+ep' /usr/local/bin/darcsden-ssh
