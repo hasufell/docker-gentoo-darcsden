@@ -1,47 +1,26 @@
 FROM       hasufell/gentoo-amd64-paludis:latest
 MAINTAINER Julian Ospald <hasufell@gentoo.org>
 
-# global flags
-RUN echo -e "*/* acl bash-completion ipv6 kmod openrc pcre readline unicode \
-zlib pam ssl sasl bzip2 urandom crypt tcpd \
--acpi -cairo -consolekit -cups -dbus -dri -gnome -gnutls -gtk -gtk2 -gtk3 \
--ogg -opengl -pdf -policykit -qt3support -qt5 -qt4 -sdl -sound -systemd \
--truetype -vim -vim-syntax -wayland -X" \
-	>> /etc/paludis/use.conf
+##### PACKAGE INSTALLATION #####
 
-# per-package flags
-# check these with "cave show <package-name>"
-RUN mkdir /etc/paludis/use.conf.d && \
-	echo -e "dev-lang/ghc binary gmp" \
-	>> /etc/paludis/use.conf.d/darcsden.conf
+# copy paludis config
+COPY ./config/paludis /etc/paludis
 
-RUN mkdir /etc/paludis/keywords.conf.d && \
-	echo -e "~dev-lang/ghc-7.8.4 ~amd64 \
-\ndev-haskell/* ~amd64 \
-\ndev-db/redis ~amd64 \
-\ndev-db/couchdb ~amd64 \
-" \
-	>> /etc/paludis/keywords.conf.d/darcsden.conf
+# update world with our USE flags
+RUN chgrp paludisbuild /dev/tty && cave resolve -c world -x
 
-# install ghc, cabal and system darcsden dependencies
-RUN chgrp paludisbuild /dev/tty && \
-	cave resolve -z --favour 'mail-mta/sendmail' \
-	dev-lang/ghc \
-	dev-haskell/cabal \
-	dev-haskell/cabal-install \
-	mail-mta/sendmail \
-	virtual/mta \
-	dev-db/couchdb \
-	dev-db/redis \
-	-x
+# install darcsden dependencies
+RUN chgrp paludisbuild /dev/tty && cave resolve -c darcsden \
+	-F 'mail-mta/sendmail' -x
 
-# install tools
-RUN chgrp paludisbuild /dev/tty && \
-	cave resolve -z \
-	app-admin/sudo \
-	app-admin/supervisor \
-	sys-process/htop \
-	-x
+# install tools set
+RUN chgrp paludisbuild /dev/tty && cave resolve -c tools -x
+
+# update etc files... hope this doesn't screw up
+RUN etc-update --automode -5
+
+################################
+
 
 RUN useradd --system -m -d /home/darcsden \
 	--shell /bin/bash --user-group darcsden
