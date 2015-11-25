@@ -9,6 +9,10 @@ COPY ./config/paludis /etc/paludis
 # update world with our USE flags
 RUN chgrp paludisbuild /dev/tty && cave resolve -c world -x
 
+# temporary workaround bug #561436
+RUN chgrp paludisbuild /dev/tty && cave resolve -z -1 \
+	sys-devel/autoconf-archive -x
+
 # install darcsden dependencies
 RUN chgrp paludisbuild /dev/tty && cave resolve -c darcsden \
 	-F 'mail-mta/sendmail' -x
