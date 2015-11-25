@@ -33,7 +33,7 @@ RUN useradd --system -m -d /home/darcsden \
 RUN sudo -u darcsden cabal update
 
 # install darcs
-RUN sudo -u darcsden cabal install darcs
+RUN sudo -u darcsden cabal install --force-reinstalls darcs
 
 # add ~/.cabal/bin to PATH
 RUN sudo -u darcsden echo 'export PATH="~/.cabal/bin:$PATH"' >> /home/darcsden/.bashrc
