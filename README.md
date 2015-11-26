@@ -120,3 +120,7 @@ docker run -ti -d \
 	-e DARCSDEN_ADMIN_EMAIL=<admin-email> \
 	hasufell/gentoo-darcsden
 ```
+
+## TODO
+
+* mail notification
