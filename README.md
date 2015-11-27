@@ -40,6 +40,17 @@ variables via `-e` to `docker run` (see below):
 * `DARCSDEN_SEND_EMAIL`: which email address to use when darcsden sends mails
 * `DARCSDEN_ADMIN_EMAIL`: the admin email address
 
+If you want to use the mailer, you need a configured mail host, possibly
+using `hasufell/gentoo-dockermail` and linking the container to the
+darcsden container. Then you can pass the following environment variables
+when starting the darcsden container:
+* `MAIL_HUB` (sets `mailhub=...` in /etc/ssmtp/ssmtp.conf)
+* `MAIL_AUTHUSER` (sets `AuthUser=...` in /etc/ssmtp/ssmtp.conf)
+* `MAIL_AUTHPASS` (sets `AuthPass=...` in /etc/ssmtp/ssmtp.conf)
+
+If you use `hasufell/gentoo-dockermail`, then `MAIL_AUTHUSER` must be
+the same as `DARCSDEN_SEND_EMAIL` and the account needs to exist.
+
 ### Certificates
 
 We need certificates which are named according to the hostname
@@ -87,6 +98,10 @@ Also see [here](http://hub.darcs.net/simon/darcsden/browse/README.md).
 docker run -ti -d \
 	--volumes-from darcsden-volumes \
 	--name=darcsden \
+	--link dockermail:dockermail \
+	-e MAIL_HUB=dockermail:587 \
+	-e MAIL_AUTHUSER=<user> \
+	-e MAIL_AUTHPASS=<pw> \
 	-e FIRST_RUN=yes \
 	-e VIRTUAL_HOST=<hostname> \
 	-e VIRTUAL_PORT=<host-port> \
@@ -112,6 +127,10 @@ docker pull hasufell/gentoo-darcsden
 docker run -ti -d \
 	--volumes-from darcsden-volumes \
 	--name=darcsden \
+	--link dockermail:dockermail \
+	-e MAIL_HUB=dockermail:587 \
+	-e MAIL_AUTHUSER=<user> \
+	-e MAIL_AUTHPASS=<pw> \
 	-e VIRTUAL_HOST=<hostname> \
 	-e VIRTUAL_PORT=<host-port> \
 	-e DARCSDEN_SSH_PORT=<sshport> \
@@ -120,7 +139,3 @@ docker run -ti -d \
 	-e DARCSDEN_ADMIN_EMAIL=<admin-email> \
 	hasufell/gentoo-darcsden
 ```
-
-## TODO
-
-* mail notification

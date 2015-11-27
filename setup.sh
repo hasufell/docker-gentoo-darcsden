@@ -33,3 +33,22 @@ fi
 
 # set privliges for darcsden-ssh to bind to ports <1024
 setcap 'cap_net_bind_service=+ep' /usr/local/bin/darcsden-ssh
+
+
+if [[ -n ${MAIL_HUB} ]] ; then
+	sed -i \
+		-e "s/^mailhub=.*$/mailhub=${MAIL_HUB}/" \
+		/etc/ssmtp/ssmtp.conf
+fi
+
+if [[ -n ${MAIL_AUTHUSER} ]] ; then
+	sed -i \
+		-e "s/^AuthUser=.*$/AuthUser=${MAIL_AUTHUSER}/" \
+		/etc/ssmtp/ssmtp.conf
+fi
+
+if [[ -n ${MAIL_AUTHPASS} ]] ; then
+	sed -i \
+		-e "s/^AuthPass=.*$/AuthPass=${MAIL_AUTHPASS}/" \
+		/etc/ssmtp/ssmtp.conf
+fi

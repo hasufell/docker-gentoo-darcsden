@@ -15,7 +15,7 @@ RUN chgrp paludisbuild /dev/tty && cave resolve -z -1 \
 
 # install darcsden dependencies
 RUN chgrp paludisbuild /dev/tty && cave resolve -c darcsden \
-	-F 'mail-mta/sendmail' -x
+	-F 'mail-mta/ssmtp' -x
 
 # install tools set
 RUN chgrp paludisbuild /dev/tty && cave resolve -c tools -x
@@ -25,6 +25,9 @@ RUN etc-update --automode -5
 
 ################################
 
+
+## configure mailer
+COPY config/mailer.conf /etc/ssmtp/ssmtp.conf
 
 RUN useradd --system -m -d /home/darcsden \
 	--shell /bin/bash --user-group darcsden
