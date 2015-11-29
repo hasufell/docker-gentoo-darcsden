@@ -60,4 +60,6 @@ RUN chmod +x /setup.sh
 
 EXPOSE 8900
 
+WORKDIR /home/darcsden
+
 CMD /setup.sh && exec /usr/bin/supervisord -n -c /etc/supervisord.conf
